@@ -2,13 +2,12 @@ import { initialTodos, validationConfig } from "../utils/constants.js";
 import { enableValidation } from "../scripts/validate.js";
 import Todo from "../components/Todo.js";
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
-import formValidator from "../components/formValidators.js";
-
-enableValidation(validationConfig);
+import formValidator from "../components/FormValidators.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
-const addTodoForm = addTodoPopup.querySelector(".popup__form");
+
+const addTodoForm = document.forms["add-todo-form"];
 const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
 // const todoTemplate = document.querySelector("#todo-template");
 const todosList = document.querySelector(".todos__list");
