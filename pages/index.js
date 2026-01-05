@@ -1,6 +1,8 @@
 import { initialTodos, validationConfig } from "../utils/constants.js";
 import { enableValidation } from "../scripts/validate.js";
 import Todo from "../components/Todo.js";
+import { v4 as uuidv4 } from "https://jspm.dev/uuid";
+import formValidator from "../components/formValidators.js";
 
 enableValidation(validationConfig);
 
@@ -87,3 +89,6 @@ initialTodos.forEach((item) => {
   const todo = generateTodo(item);
   todosList.append(todo);
 });
+
+const newTodoValidator = new formValidator(validationConfig, addTodoForm);
+newTodoValidator.enableValidation();

@@ -25,9 +25,14 @@
 }
 
 .todo__completed:checked {
-  border: none;
-  background-size: contain;
-  background-image: url(../images/checkbox.svg);
+  border: none !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  /* Prefer external SVG; fall back to inline data URI if external fails */
+  background-image: url(../images/checkbox.svg) !important;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><rect width='24' height='24' rx='4' fill='%235877E7'/><path d='M4.5 10.5L11 17L19.5 5' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") !important;
+  background-color: #5877e7 !important; /* fallback if SVG fails to render */
 }
 
 .todo__name {
