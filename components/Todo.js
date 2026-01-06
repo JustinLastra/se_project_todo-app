@@ -1,19 +1,10 @@
-class todo {
+class Todo {
   constructor(data, selector) {
     this._data = data;
-    this.templateElement = document.querySelector(selector);
+    this._template = document.querySelector(selector);
   }
 
-  _seteventListeners() {
-    const todoCheckboxEl = todoElement.querySelector(".todo__completed");
-    if (!todoCheckboxEl) return;
-    todoCheckboxEl.addEventListener("change", (evt) => {
-      this._data.completed = evt.target.checked;
-      todoElement.classList.toggle("todo_completed", this._data.completed);
-      
-    });
-  }
-  _generateCheckboxel() {
+  _generateCheckbox(todoElement) {
     const todoCheckboxEl = todoElement.querySelector(".todo__completed");
     const todoLabel = todoElement.querySelector(".todo__label");
     todoCheckboxEl.checked = Boolean(this._data.completed);
@@ -22,23 +13,38 @@ class todo {
     todoCheckboxEl.id = `todo-${id}`;
     todoLabel.setAttribute("for", `todo-${id}`);
   }
+
+  _setEventListeners(todoElement) {
+    const todoCheckboxEl = todoElement.querySelector(".todo__completed");
+    if (todoCheckboxEl) {
+      todoCheckboxEl.addEventListener("change", (evt) => {
+        this._data.completed = evt.target.checked;
+        todoElement.classList.toggle("todo_completed", this._data.completed);
+      });
+    }
+
+    const todoDeleteBtn = todoElement.querySelector(".todo__delete-btn");
+    if (todoDeleteBtn) {
+      todoDeleteBtn.addEventListener("click", () => {
+        todoElement.remove();
+      });
+    }
+  }
+
   getview() {
-    this._todoElement = this._templateElement.content
+    const todoElement = this._template.content
       .querySelector(".todo")
       .cloneNode(true);
 
-    this._todoNameEl = this._todoElement.querySelector(".todo__name");
-    this._todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
-    this._todoLabel = this._todoElement.querySelector(".todo__label");
-    this._todoDate = this._todoElement.querySelector(".todo__date");
-    this._todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
+    const todoNameEl = todoElement.querySelector(".todo__name");
+    const todoCheckboxEl = todoElement.querySelector(".todo__completed");
+    const todoDate = todoElement.querySelector(".todo__date");
 
-    this._generateCheckboxel(todoElement);
-    this._seteventListeners(todoElement);
+    // Apply content & attributes
+    todoNameEl.textContent = this._data.name || "";
+    this._generateCheckbox(todoElement);
 
-    todoNameEl.textContent = this._data.name;
-    todoCheckboxEl.checked = Boolean(this._data.completed);
-
+    // Format due date if present
     const dueDate = new Date(this._data.date);
     if (!isNaN(dueDate)) {
       todoDate.textContent = `Due: ${dueDate.toLocaleString("en-US", {
@@ -48,11 +54,10 @@ class todo {
       })}`;
     }
 
-    todoDeleteBtn.addEventListener("click", () => {
-      todoElement.remove();
-    });
+    this._setEventListeners(todoElement);
 
     return todoElement;
   }
 }
-export default todo;
+
+export default Todo;
