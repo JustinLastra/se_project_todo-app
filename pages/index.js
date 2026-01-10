@@ -3,6 +3,7 @@ import { enableValidation } from "../scripts/validate.js";
 import Todo from "../components/Todo.js";
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 import FormValidator from "../components/FormValidators.js";
+import Section from "../components/Sections.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
@@ -11,6 +12,15 @@ const addTodoForm = document.forms["add-todo-form"];
 const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
 // const todoTemplate = document.querySelector("#todo-template");
 const todosList = document.querySelector(".todos__list");
+
+const section = new Section({
+  items: initialTodos,
+  renderer: (item) => generateTodo(item),
+  containerSelector: ".todos__list",
+});
+
+// call section instances renderItems method to render initial todos
+section.renderItems();
 
 const openModal = (modal) => {
   modal.classList.add("popup_visible");
@@ -28,11 +38,7 @@ const generateTodo = (data) => {
   return todoElement;
 };
 
-// create the function once
-const renderTodo = (item) => {
-  const todo = generateTodo(item);
-  todosList.append(todo);
-};
+// renderer returns a node; Section appends it
 
 addTodoButton.addEventListener("click", () => {
   openModal(addTodoPopup);
@@ -55,14 +61,11 @@ addTodoForm.addEventListener("submit", (evt) => {
   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
 
   const values = { name, date };
-  renderTodo(values);
+  section.addItem(values);
 
   newTodoValidator.resetValidation();
 
   closeModal(addTodoPopup);
 });
 
-initialTodos.forEach((item) => {
-  // Use renderTodo to avoid duplication
-  renderTodo(item);
-});
+// Initial items rendered by Section above
