@@ -8,7 +8,10 @@ class Section {
   renderItems() {
     this._items.forEach((item) => {
       const node = this._renderer(item, this._container);
-      if (node && (node instanceof Element || node instanceof DocumentFragment)) {
+      if (
+        node &&
+        (node instanceof Element || node instanceof DocumentFragment)
+      ) {
         this._container.append(node);
       }
     });
@@ -17,7 +20,10 @@ class Section {
   addItems(items) {
     items.forEach((item) => {
       const node = this._renderer(item, this._container);
-      if (node && (node instanceof Element || node instanceof DocumentFragment)) {
+      if (
+        node &&
+        (node instanceof Element || node instanceof DocumentFragment)
+      ) {
         this._container.append(node);
       }
     });
